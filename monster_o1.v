@@ -99,9 +99,7 @@ parameter IDLE = 2'd0, GET = 2'd1, TRANSMIT = 2'd2;
     
     //RGB output
     always @(posedge clk or posedge rst) begin
-        // use modue
-
-        if(rst) begin
+        if(rst)begin
             R0 <= 1'd0;
             G0 <= 1'd0;
             B0 <= 1'd0;
@@ -109,67 +107,15 @@ parameter IDLE = 2'd0, GET = 2'd1, TRANSMIT = 2'd2;
             G1 <= 1'd0;
             B1 <= 1'd0;
         end
-        else if((row == 4'd1 || row == 4'd9) && (cnt == 7'd4)) begin
-            R0 <= 1'd0;
-            G0 <= 1'd1;
-            B0 <= 1'd1;
-        end
-        // else if((row == 4'd0 || row == 4'd) && (cnt == 7'd3 || cnt == 7'd7)) begin
-        //     R0 <= 1'd0;
-        //     G0 <= 1'd1;
-        //     B0 <= 1'd1;
-        // end
-        else if((row == 4'd2 || row == 4'd8) && (cnt >= 7'd1 || cnt <= 7'd5)) begin
-            R0 <= 1'd0;
-            G0 <= 1'd1;
-            B0 <= 1'd1;
-        end
-        else if((row == 4'd3 || row == 4'd7) && (cnt >= 7'd0 && cnt <= 7'd6 && cnt != 7'd5)) begin 
-            R0 <= 1'd0;
-            G0 <= 1'd1;
-            B0 <= 1'd1;
-        end
-        else if((row == 4'd4 || row == 4'd6) && (cnt >= 7'd2 && cnt <= 7'd7 && cnt != 7'd5)) begin
-            R0 <= 1'd0;
-            G0 <= 1'd1;
-            B0 <= 1'd1;
-        end
-        else if(row == 4'd5 && (cnt >= 7'd0 && cnt <= 7'd6 && cnt != 7'd3 && cnt != 7'd4)) begin
-            R0 <= 1'd0;
-            G0 <= 1'd1;
-            B0 <= 1'd1;
-        end
-        // else if(cnt[0] == 0 && cnt[1] == 0 && cnt[2] == 0 && cnt[3] == 0) begin    //multiple of 16
-        //     R0 <= 1'd1;
-        //     R1 <= 1'd1;
-        // end
-
-        // else if(cnt[0] == 0 && cnt[1] == 0 && cnt[2] == 0) begin                   //multiple of 8
-        //     G0 <= 1'd1;
-        //     G1 <= 1'd1;
-        // end
-        // else if(cnt[0] == 0 && cnt[1] == 0) begin                                  //multiple of 4
-        //     B0 <= 1'd1;
-        //     B1 <= 1'd1;
-        // end
-        // else if(cnt[0] == 0) begin                                                 //multiple of 2
-        //     R0 <= 1'd1;
-        //     G0 <= 1'd1;
-        //     B0 <= 1'd1;
-        //     R1 <= 1'd1;
-        //     G1 <= 1'd1;
-        //     B1 <= 1'd1;
-        // end
         else begin
-            R0 <= 1'd0;
-            G0 <= 1'd0;
-            B0 <= 1'd0;
-            R1 <= 1'd0;
-            G1 <= 1'd0;
-            B1 <= 1'd0;
-        end
+            R0 <= R0in;
+            G0 <= G0in;
+            B0 <= B0in;
+            R1 <= R1in;
+            G1 <= G1in;
+            B1 <= B1in;
+        end    
     end
-
     //OE, LAT output
     always @(posedge clk or posedge rst) begin
         if(rst) begin
@@ -194,3 +140,72 @@ parameter IDLE = 2'd0, GET = 2'd1, TRANSMIT = 2'd2;
     end
 
     endmodule
+
+    // if(rst) begin
+    //         R0 <= 1'd0;
+    //         G0 <= 1'd0;
+    //         B0 <= 1'd0;
+    //         R1 <= 1'd0;
+    //         G1 <= 1'd0;
+    //         B1 <= 1'd0;
+    //     end
+    //     else if((row == 4'd1 || row == 4'd9) && (cnt == 7'd4)) begin
+    //         R0 <= 1'd0;
+    //         G0 <= 1'd1;
+    //         B0 <= 1'd1;
+    //     end
+    //     // else if((row == 4'd0 || row == 4'd) && (cnt == 7'd3 || cnt == 7'd7)) begin
+    //     //     R0 <= 1'd0;
+    //     //     G0 <= 1'd1;
+    //     //     B0 <= 1'd1;
+    //     // end
+    //     else if((row == 4'd2 || row == 4'd8) && (cnt >= 7'd1 || cnt <= 7'd5)) begin
+    //         R0 <= 1'd0;
+    //         G0 <= 1'd1;
+    //         B0 <= 1'd1;
+    //     end
+    //     else if((row == 4'd3 || row == 4'd7) && (cnt >= 7'd0 && cnt <= 7'd6 && cnt != 7'd5)) begin 
+    //         R0 <= 1'd0;
+    //         G0 <= 1'd1;
+    //         B0 <= 1'd1;
+    //     end
+    //     else if((row == 4'd4 || row == 4'd6) && (cnt >= 7'd2 && cnt <= 7'd7 && cnt != 7'd5)) begin
+    //         R0 <= 1'd0;
+    //         G0 <= 1'd1;
+    //         B0 <= 1'd1;
+    //     end
+    //     else if(row == 4'd5 && (cnt >= 7'd0 && cnt <= 7'd6 && cnt != 7'd3 && cnt != 7'd4)) begin
+    //         R0 <= 1'd0;
+    //         G0 <= 1'd1;
+    //         B0 <= 1'd1;
+    //     end
+    //     // else if(cnt[0] == 0 && cnt[1] == 0 && cnt[2] == 0 && cnt[3] == 0) begin    //multiple of 16
+    //     //     R0 <= 1'd1;
+    //     //     R1 <= 1'd1;
+    //     // end
+
+    //     // else if(cnt[0] == 0 && cnt[1] == 0 && cnt[2] == 0) begin                   //multiple of 8
+    //     //     G0 <= 1'd1;
+    //     //     G1 <= 1'd1;
+    //     // end
+    //     // else if(cnt[0] == 0 && cnt[1] == 0) begin                                  //multiple of 4
+    //     //     B0 <= 1'd1;
+    //     //     B1 <= 1'd1;
+    //     // end
+    //     // else if(cnt[0] == 0) begin                                                 //multiple of 2
+    //     //     R0 <= 1'd1;
+    //     //     G0 <= 1'd1;
+    //     //     B0 <= 1'd1;
+    //     //     R1 <= 1'd1;
+    //     //     G1 <= 1'd1;
+    //     //     B1 <= 1'd1;
+    //     // end
+    //     else begin
+    //         R0 <= 1'd0;
+    //         G0 <= 1'd0;
+    //         B0 <= 1'd0;
+    //         R1 <= 1'd0;
+    //         G1 <= 1'd0;
+    //         B1 <= 1'd0;
+    //     end
+    // end
