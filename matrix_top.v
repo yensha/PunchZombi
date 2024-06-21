@@ -21,7 +21,7 @@ module LED_top (
     wire clk_shift;
     assign clk_shft = clk_shift;
 
-    clk_div clk_div0(.clk(clk),
+    clk_div clk_div_0(.clk(clk),
                 .rst(rst),
                 .clk_div(clk_shift)
                 );
