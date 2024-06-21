@@ -8,4 +8,11 @@ module pic_DFF(
 
 always@(posedge clk or posedge rst)begin
     if(rst)
-        D <= 
+        D <= 160'd0;
+    else 
+        Q <= D;
+end
+always@(*)begin
+    if(shift)
+        D = Q
+end
