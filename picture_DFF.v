@@ -3,18 +3,16 @@ module pic_DFF(
     input rst,
     input shift,
     input [159:0] D,
-    output [159:0] Q
-)
+    output reg [159:0] Q
+);
 
-always@(posedge clk or posedge rst)begin
-    if(rst)
-        D <= 160'd0;
-    else 
-        Q <= D;
-end
-always@(*)begin
-    if(shift)
-        D = Q
-end
-
+    always@(posedge clk or posedge rst)begin
+        if(rst)
+            D <= 160'd0;
+        else if(shift)
+            Q[159:0] <= D[159:0];   
+    end
+    
 endmodule
+
+
