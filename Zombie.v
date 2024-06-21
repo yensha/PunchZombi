@@ -5,7 +5,7 @@ module Zombie (
     input  btn2,      // Button 2
     input  btn3,      // Button 3
     //output reg [3:0] output_val, // 4-bit output value
-    input gameover,
+    output gameover,
     output reg [3:1] led  // 3 LEDs
 );
 
@@ -26,6 +26,23 @@ always@(posedge clk or posedge rst)begin
     end
     else if(CS == Gaming)
         timer <= timer + 1'd1;
+end
+//state changing 
+always @(*) begin
+    case(CS)
+        IDLE:
+            NS = Gaming;
+        Gaming:begin
+            if(timer == 5'd30)
+                NS = Finish;
+            else
+                NS = Gaming;
+        end
+        Finish:
+            NS = Finish;
+        default:
+            NS = IDLE;
+    endcase
 end
 //controll button & led signals
 always @(posedge clk or posedge rst) begin

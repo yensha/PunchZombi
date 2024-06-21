@@ -3,19 +3,18 @@ module matrix_generate(
     input rst, 
     input col,
     input row,
-    input shift,
     input [1:0] monster_num, // random
     input btn1, //btn1, btn2, btn3
     input btn2,
     input btn3,
+    input gameover,
     output need_random, // tell Random module to generate random
     output R0,
     output B0,
     output G0,
     output R1,
     output B1,
-    output G1,
-    output gameover
+    output G1
 );
 reg [159:0] R00, R01, R02, R03, R04, R05;// upper registers
 reg [159:0] R10, R11, R12, R13, R14, R15; // lower registers
@@ -74,6 +73,7 @@ pic_DFF pic_DFF8( .clk(clk), .rst(rst), .shift(shift), .D(R12), .Q(R11));
 pic_DFF pic_DFF9( .clk(clk), .rst(rst), .shift(shift), .D(R11), .Q(R10));
 
 //------------------------detector------------------------------
+wire shift ;// tell the picture to shift
 always@(*)begin
      if(btn1)begin
             if(R00[2][1])
@@ -81,25 +81,45 @@ always@(*)begin
             else
                 shift = 1'd0;
     end
-    if(btn2)begin
+    else if(btn2)begin
         if(R00[15][2])
             shift = 1'd1;
         else
             shift = 1'd0;
     end
-    if(btn3)begin
+    else if(btn3)begin
         if(R10[13][0])
             shift = 1'd1;
         else
             shift = 1'd0;
     end
-    default:begin
+    else begin
         shift = 1'd0;
     end
 end
-always@(posedge clk)begin
-    if(shift)
-        shift <= 1'd0;
+//tell random to generate random number
+always@(*)begin
+     if(btn1)begin
+            if(R00[2][1])
+                need_random = 1'd1;
+            else
+                need_random = 1'd0;
+    end
+    else if(btn2)begin
+        if(R00[15][2])
+            need_random = 1'd1;
+        else
+            need_random = 1'd0;
+    end
+    else if(btn3)begin
+        if(R10[13][0])
+            need_random = 1'd1;
+        else
+            need_random = 1'd0;
+    end
+    else begin
+        need_random = 1'd0;
+    end
 end
 //--------------------------------------------------------------
 
@@ -189,7 +209,7 @@ always(*)begin
                 NS <= ready;
         end
         Gaming:begin
-            if(gameovercnt)
+            if(gameover)
                 NS = Finish;
             else
                 NS = Gaming;
