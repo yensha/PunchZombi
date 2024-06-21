@@ -121,6 +121,8 @@ always@(posedge clk or posedge rst)begin
        R14 <= 160'd0;
        R15 <= 160'd0;
     end
+    else if(CS == Gaming && shift)begin
+        R05 <= 
     else if(CS == Finish)begin
        R00 <= 160'd0;
        R01 <= 160'd0;
@@ -135,6 +137,7 @@ always@(posedge clk or posedge rst)begin
        R14 <= 160'd0;
        R15 <= 160'd0;
     end
+
 end
 
 //state
@@ -337,30 +340,5 @@ always(*)begin
         
     endcase
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 endmodule
