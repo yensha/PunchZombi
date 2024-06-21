@@ -10,6 +10,9 @@ matrix_generate
 module LED_top (
     input clk,
     input rst,
+    input btn1in,
+    input btn2in,
+    input btn3in,
     output A, 
     output B,
     output C,
@@ -41,6 +44,7 @@ module LED_top (
     );
     wire [3:0] row;
     wire [6:0] col;
+    wire R0in, R1in, B0in, B1in, G0in, G1in;
     matrix m1(
     .clk(clk_shift),
     .rst(rst),               
@@ -71,33 +75,34 @@ module LED_top (
     Zombie zombie(
         .clk(clk_game_shift),
         .rst(rst),
-        .btn1(btn1),      // Button 1
-        .btn2(btn2),      // Button 2
-        .btn3(btn3),      // Button 3
+        .btn1(btn1in),      // Button 1
+        .btn2(btn2in),      // Button 2
+        .btn3(btn3in),      // Button 3
         .gameover(Isgameover),
         .led(led)  
     );
     wire needs_random;
+    wire [1:0] random_num;
     lfsr_random_v2  Random(
         .clk(clk),
         .btn(need_random),
         .rst(rst),
         .seed(2'd1),
-        .rand_num(rand_num)
+        .rand_num(random_num) //output
     );
-    wire btn1, btn2, btn3;
-    wire [1:0] rand_num;
-    wire R0in, R1in, B0in, B1in, G0in, G1in;
+    //wire btn1in, btn2in, btn3in;
+    
+    
     matrix_generate MG(
         .clk(clk),
         .rst(rst), 
         .col(col),
         .row(row),
-        .monster_num(rand_num), // random
+        .monster_num(random_num), // random(input)
         .need_random(needs_random),
-        .btn1(btn1), //btn1, btn2, btn3
-        .btn2(btn2),
-        .btn3(btn3),
+        .btn1(btn1in), //btn1, btn2, btn3
+        .btn2(btn2in),
+        .btn3(btn3in),
         .R0(R0in),
         .B0(B0in),
         .G0(G0in),

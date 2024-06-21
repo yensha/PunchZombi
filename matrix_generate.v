@@ -44,19 +44,19 @@ pic_DFF pic_DFF9( .clk(clk), .rst(rst), .shift(shift), .D(R11), .Q(R10));
 
 always@(*)begin
      if(btn1)begin
-            if(R00[2][1])
+            if(R00[31])
                 shift = 1'd1;
             else
                 shift = 1'd0;
     end
     else if(btn2)begin
-        if(R00[15][2])
+        if(R00[152]) //row 14 col 2
             shift = 1'd1;
         else
             shift = 1'd0;
     end
     else if(btn3)begin
-        if(R10[13][0])
+        if(R10[130])
             shift = 1'd1;
         else
             shift = 1'd0;
