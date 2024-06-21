@@ -8,26 +8,26 @@ module matrix_generate(
     input btn2,
     input btn3,
     input gameover,
-    output need_random, // tell Random module to generate random
-    output R0,
-    output B0,
-    output G0,
-    output R1,
-    output B1,
-    output G1
+    output reg need_random, // tell Random module to generate random
+    output reg R0,
+    output reg B0,
+    output reg G0,
+    output reg R1,
+    output reg B1,
+    output reg G1
 );
 reg [159:0] R00, R01, R02, R03, R04, R05;// upper registers
 reg [159:0] R10, R11, R12, R13, R14, R15; // lower registers
 //picture registers
-wire [0:159] up_pic = 
-{ 160'b0000000000_0000100000_0111110000_1111101000_0011101100_1110011000_0011101100_1111101000_0111110000_0000100000_0000000000_0000000000_1111110000_0011111000_0110101100_0010111100
-};
-wire [0:159] down_pic = 
-{ 160'b0110101100_0011111000_1111110000_0000000000_0000000000_0000000000_0000100000_1100010100_0010111100_1111101000_0001111000_1111101000_0010111100_1100010100_0000100000_0000000000
-};
+wire [159:0] up_pic = 
+{ 160'b0111100100_0110101100_0001111100_0001111111_0000000000_0000000000_0000100000_0000111110_0000111111_0110101110_0110011110_0110111000_0101111111_0000111110_0000100000_0000000000 };
+
+wire [159:0] down_pic = 
+{ 160'b0000000000_0000100000_0010100011_0111101000_0001111000_0101111110_0000111111_0000000000_0000000000_0000000000_0000000000_0000001111_0000111111_0111101000_0010100011_0000100000 };
+
 
 //picture of monster1, half of monster2
-
+reg shift ;// tell the picture to shift
 pic_DFF pic_DFF0( .clk(clk), .rst(rst), .shift(shift), .D(R05), .Q(R04));
 pic_DFF pic_DFF1( .clk(clk), .rst(rst), .shift(shift), .D(R04), .Q(R03));
 pic_DFF pic_DFF2( .clk(clk), .rst(rst), .shift(shift), .D(R03), .Q(R02));
@@ -41,7 +41,7 @@ pic_DFF pic_DFF8( .clk(clk), .rst(rst), .shift(shift), .D(R12), .Q(R11));
 pic_DFF pic_DFF9( .clk(clk), .rst(rst), .shift(shift), .D(R11), .Q(R10));
 
 //------------------------detector------------------------------
-wire shift ;// tell the picture to shift
+
 always@(*)begin
      if(btn1)begin
             if(R00[2][1])
@@ -189,9 +189,9 @@ end
         
 //put the signals into matrix module
 wire [5:0] register;
-assign register =  cnt/6'd10;
+assign register =  col /6'd10;
 wire [11:0] pixel;
-assign pixel = cnt - register + row * 6'd6;
+assign pixel = col - register + row * 6'd6;
 always@(*)begin
     case(register)
         0:begin

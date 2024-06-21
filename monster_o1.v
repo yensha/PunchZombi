@@ -38,8 +38,8 @@ module matrix (
     output reg  R1,
     output reg  G1,
     output reg  B1,
-    output cnt,
-    output rows,
+    output  reg col,
+    output  reg rows,
     output reg OE,
     output reg LAT
 );
@@ -93,17 +93,17 @@ parameter IDLE = 2'd0, GET = 2'd1, TRANSMIT = 2'd2;
     end
 
 //output the signal of row and column
-always @(posedge clk or posedge rst) begin
+always @(*) begin
     if(rst)
-        col <= 7'd0;
+        col = 7'd0;
     else 
-        col <= cnt;
+        col = cnt;
 end
-always @(posedge clk or posedge rst) begin
+always @(*) begin
     if(rst)
-        rows <= 4'd0;
+        rows = 4'd0;
     else 
-        rows <= row;
+        rows = row;
 end
 //output
 
