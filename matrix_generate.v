@@ -4,8 +4,11 @@ module matrix_generate(
     input col,
     input row,
     input shift,
-    input [2:0] monster_num, // random
-    input [2:0] pressed_button, //btn1, btn2, btn3
+    input [1:0] monster_num, // random
+    input btn1, //btn1, btn2, btn3
+    input btn2,
+    input btn3,
+    output need_random, // tell Random module to generate random
     output R0,
     output B0,
     output G0,
@@ -17,7 +20,42 @@ module matrix_generate(
 reg [159:0] R00, R01, R02, R03, R04, R05;// upper registers
 reg [159:0] R10, R11, R12, R13, R14, R15; // lower registers
 //picture registers
-wire [159:0] up_pic = { 
+wire [0:159] up_pic = 
+{ 0000000000
+  0000100000
+  0111110000
+  1111101000
+  0011101100
+  1110011000
+  0011101100
+  1111101000
+  0111110000
+  0000100000
+  0000000000
+  0000000000
+  1111110000
+  0011111000
+  0110101100
+  0010111100
+
+                    }
+wire [0:159] down_pic = 
+{ 0110101100
+  0011111000
+  1111110000
+  0000000000
+  0000000000
+  0000000000
+  0000100000
+  1100010100
+  0010111100
+  1111101000
+  0001111000
+  1111101000
+  0010111100
+  1100010100
+  0000100000
+  0000000000
 
 }
 
@@ -37,29 +75,27 @@ pic_DFF pic_DFF9( .clk(clk), .rst(rst), .shift(shift), .D(R11), .Q(R10));
 
 //------------------------detector------------------------------
 always@(*)begin
-    case(pressed_button)
-        1:begin
+     if(btn1)begin
             if(R00[2][1])
                 shift = 1'd1;
             else
                 shift = 1'd0;
-        end
-        2:begin
-            if(R00[15][2])
-                shift = 1'd1;
-            else
-                shift = 1'd0;
-        end
-        3:begin
-            if(R10[13][0])
-                shift = 1'd1;
-            else
-                shift = 1'd0;
-        end
-        default:begin
+    end
+    if(btn2)begin
+        if(R00[15][2])
+            shift = 1'd1;
+        else
             shift = 1'd0;
-        end
-    endcase
+    end
+    if(btn3)begin
+        if(R10[13][0])
+            shift = 1'd1;
+        else
+            shift = 1'd0;
+    end
+    default:begin
+        shift = 1'd0;
+    end
 end
 always@(posedge clk)begin
     if(shift)
@@ -115,6 +151,13 @@ always@(posedge clk or posedge rst)begin
         setupcnt <= 3'd0;
     else if(CS == ready)
         setupcnt <= setupcnt + 3'd1;
+end
+//need_random
+always @(posedge clk ) begin
+    if(NS == ready)
+        need_random <= 1'd1;
+    else if(NS == Gaming)
+        need_random <= 1'd0;    
 end
 
 //change state

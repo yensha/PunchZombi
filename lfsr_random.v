@@ -8,43 +8,43 @@ module lfsr_random (
 reg clk_div;       
 reg [25:0] cnt;    
 
- always@(posedge clk or posedge rst)
- begin
-  if (rst)
-   cnt <= 26'd0;                  
-  else if (cnt == 31250000-1)//31250000 means clk change about every half second
-   cnt <= 26'd0;                  
-  else
-   cnt <= cnt + 1;                
+ always@(posedge clk or posedge rst)begin
+    if (rst)
+        cnt <= 26'd0;                  
+    else if (cnt == 31250000-1)//31250000 means clk change about every half second
+        cnt <= 26'd0;                  
+    else
+        cnt <= cnt + 1;                
  end
 
- always@(posedge clk or posedge rst)
- begin
-  if (rst)
-   clk_div <= 1'b0;                
-  else if (cnt == 0)
-   clk_div <= ~clk_div;            
-     else if (cnt == 15625000-1)//half time of the clk change from 1 to 0
-   clk_div <= ~clk_div;
+ always@(posedge clk or posedge rst)begin
+    if (rst)
+        clk_div <= 1'b0;                
+    else if (cnt == 0)
+        clk_div <= ~clk_div;            
+    else if (cnt == 15625000-1)//half time of the clk change from 1 to 0
+        clk_div <= ~clk_div;
  end
-    reg [1:0] lfsr;
-    always @(posedge btn or posedge rst) begin
-        if (rst) begin
-            lfsr <= seed;
-        end else begin
-            // LFSR feedback polynomial for 2-bit: x^2 + x + 1
-            lfsr <= {lfsr[0], lfsr[1]^clk_div};
-        end
-    end
 
-    always @(posedge btn or posedge rst) begin
-        if (rst) begin
-            rand_num <= 2'b00;
-        end else begin
-            // Ensure rand_num is between 1 and 3
-            rand_num <= (lfsr % 3) + 1;
-        end
+reg [1:0] lfsr;
+
+always @(posedge btn or posedge rst) begin
+    if (rst) begin
+        lfsr <= seed;
+    end else begin
+        // LFSR feedback polynomial for 2-bit: x^2 + x + 1
+        lfsr <= {lfsr[0], lfsr[1]^clk_div};
     end
+end
+
+always @(posedge btn or posedge rst) begin
+    if (rst) begin
+        rand_num <= 2'b00;
+    end else begin
+        // Ensure rand_num is between 1 and 3
+        rand_num <= (lfsr % 3) + 1;
+    end
+end
 
 endmodule
 
