@@ -13,7 +13,9 @@ module LED_top (
     output B1,
     output OE,
     output LAT,
-    output clk_shft
+    output clk_shft,
+    output clk_game_shft,
+    output reg [3:1]led
 );
 
     wire clk_shift;
@@ -23,7 +25,11 @@ module LED_top (
                 .rst(rst),
                 .clk_div(clk_shift)
                 );
-
+    clk_div_game clk_div_game0(
+        .clk(clk),
+        .rst(rst),
+        .clk_div(clk_div_game_shift)
+    )
     matrix m1(
     .clk(clk_shift),
     .rst(rst),               
@@ -40,4 +46,15 @@ module LED_top (
     .OE(OE),
     .LAT(LAT)
 );
+    wire clk_game_shift;
+    assign clk_game_shft = clk_game_shift;
+
+    Zombie zombie(
+        .clk(clk_game_shift),
+        .rst(rst),
+        .btn1(btn1),      // Button 1
+        .btn2(btn2),      // Button 2
+        .btn3(btn3),      // Button 3
+        .led(led)  
+    );
 endmodule 
