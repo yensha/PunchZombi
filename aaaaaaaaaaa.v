@@ -1,4 +1,4 @@
-module lfsr_random (
+module lfsr_random_v2 (
     input clk,
     input wire btn,
     input wire rst,

@@ -121,8 +121,21 @@ always@(posedge clk or posedge rst)begin
        R14 <= 160'd0;
        R15 <= 160'd0;
     end
-    else if(CS == Gaming && shift)begin
-        R05 <= 
+    //input data(picture)
+    else if((CS == Gaming || CS == ready) && shift)begin
+        if(monster_num == 2'd0)begin
+            R05 <= { 60'd0, up_pic[99:0]};
+            R15 <= 160'd0;
+        end
+        else if(monster_num == 2'd1)begin
+            R05 <= {up_pic[159:100] , 100'd0};
+            R15 <= { 110'd0 ,down_pic[49:0]};
+        end
+        else if(monster_num == 2'd2)begin
+            R05 <= 160'd0;
+            R15 <= {down_pic[159:50], 40'd0};
+        end
+    end
     else if(CS == Finish)begin
        R00 <= 160'd0;
        R01 <= 160'd0;
