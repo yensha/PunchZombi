@@ -16,6 +16,7 @@ Multiples of 4 are blue.
 Multiples of 8 are green.
 Multiples of 16 are red.
 Others aren't beaming.
+
 */
 
 module matrix (
@@ -43,7 +44,7 @@ reg [3:0] row;    // row count
 
 parameter IDLE = 2'd0, GET = 2'd1, TRANSMIT = 2'd2;
 
-    //FSM
+    //©w¸qFSM
     always @(posedge clk or posedge rst) begin
         if(rst) CS <= IDLE;
 
@@ -102,37 +103,32 @@ parameter IDLE = 2'd0, GET = 2'd1, TRANSMIT = 2'd2;
             G1 <= 1'd0;
             B1 <= 1'd0;
         end
-        else if((row == 4'd0 || row == 4'd1) && (cnt == 7'd3 || cnt == 7'd7)) begin
+        else if((row == 4'd1 || row == 4'd9) && (cnt == 7'd4)) begin
             R0 <= 1'd0;
             G0 <= 1'd1;
             B0 <= 1'd1;
         end
-        else if(row == 4'd2 && (cnt == 7'd4 || cnt == 7'd6)) begin
+        // else if((row == 4'd0 || row == 4'd) && (cnt == 7'd3 || cnt == 7'd7)) begin
+        //     R0 <= 1'd0;
+        //     G0 <= 1'd1;
+        //     B0 <= 1'd1;
+        // end
+        else if((row == 4'd2 || row == 4'd8) && (cnt >= 7'd1 || cnt <= 7'd5)) begin
             R0 <= 1'd0;
             G0 <= 1'd1;
             B0 <= 1'd1;
         end
-        else if(row == 4'd3 && (cnt >= 7'd3 && cnt <= 7'd7)) begin 
+        else if((row == 4'd3 || row == 4'd7) && (cnt >= 7'd0 && cnt <= 7'd6 && cnt != 7'd5)) begin 
             R0 <= 1'd0;
             G0 <= 1'd1;
             B0 <= 1'd1;
         end
-        else if(row == 4'd4 && (cnt >= 7'd2 && cnt <= 7'd8 && cnt != 7'd4 && cnt != 7'd6)) begin
+        else if((row == 4'd4 || row == 4'd6) && (cnt >= 7'd2 && cnt <= 7'd7 && cnt != 7'd5)) begin
             R0 <= 1'd0;
             G0 <= 1'd1;
             B0 <= 1'd1;
         end
-        else if(row == 4'd5 && (cnt >= 7'd2 && cnt <= 7'd8)) begin
-            R0 <= 1'd0;
-            G0 <= 1'd1;
-            B0 <= 1'd1;
-        end
-        else if(row == 4'd6 && (cnt >= 7'd1 && cnt <= 7'd9 && cnt != 7'd2 && cnt != 7'd8)) begin
-            R0 <= 1'd0;
-            G0 <= 1'd1;
-            B0 <= 1'd1;
-        end
-        else if(row == 4'd7 && (cnt ==7'd0 || cnt ==7'd3 || cnt ==7'd7 || cnt ==7'd10)) begin
+        else if(row == 4'd5 && (cnt >= 7'd0 && cnt <= 7'd6 && cnt != 7'd3 && cnt != 7'd4)) begin
             R0 <= 1'd0;
             G0 <= 1'd1;
             B0 <= 1'd1;
