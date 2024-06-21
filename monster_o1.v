@@ -71,7 +71,7 @@ parameter IDLE = 2'd0, GET = 2'd1, TRANSMIT = 2'd2;
 
         else if(cnt == 7'd64) cnt <= 7'd0;
 
-        else if(NS == GET)    cnt <= cnt + 7'd1;
+        else if(CS == GET)    cnt <= cnt + 7'd1;
         else                  cnt <= cnt;
     end
 
@@ -90,7 +90,7 @@ parameter IDLE = 2'd0, GET = 2'd1, TRANSMIT = 2'd2;
         {D, C, B, A} = row;
     end
     
-    //RGB output
+     //RGB output
     always @(posedge clk or posedge rst) begin
         // use modue
 
@@ -102,62 +102,31 @@ parameter IDLE = 2'd0, GET = 2'd1, TRANSMIT = 2'd2;
             G1 <= 1'd0;
             B1 <= 1'd0;
         end
-        else if((row == 4'd0 || row == 4'd1) && (cnt == 7'd3 || cnt == 7'd7)) begin
+        else if((row == 4'd1 || row == 4'd9) && (cnt == 7'd4)) begin
             R0 <= 1'd0;
-            G0 <= 1'd1;
+            G0 <= 1'd0;
             B0 <= 1'd1;
         end
-        else if(row == 4'd2 && (cnt == 7'd4 || cnt == 7'd6)) begin
+        else if((row == 4'd2 || row == 4'd8) && (cnt == 7'd1 || cnt == 7'd2 || cnt == 7'd3 || cnt == 7'd4 || cnt == 7'd5)) begin
             R0 <= 1'd0;
-            G0 <= 1'd1;
+            G0 <= 1'd0;
             B0 <= 1'd1;
         end
-        else if(row == 4'd3 && (cnt >= 7'd3 && cnt <= 7'd7)) begin 
+        else if((row == 4'd3 || row == 4'd7) && (cnt == 7'd0 || cnt == 7'd1 || cnt == 7'd2 || cnt == 7'd3 || cnt == 7'd4 || cnt == 7'd6)) begin 
             R0 <= 1'd0;
-            G0 <= 1'd1;
+            G0 <= 1'd0;
             B0 <= 1'd1;
         end
-        else if(row == 4'd4 && (cnt >= 7'd2 && cnt <= 7'd8 && cnt != 7'd4 && cnt != 7'd6)) begin
+        else if((row == 4'd4 || row == 4'd6) && (cnt == 7'd2 || cnt == 7'd3 || cnt == 7'd4 || cnt == 7'd6 || cnt == 7'd7)) begin
             R0 <= 1'd0;
-            G0 <= 1'd1;
+            G0 <= 1'd0;
             B0 <= 1'd1;
         end
-        else if(row == 4'd5 && (cnt >= 7'd2 && cnt <= 7'd8)) begin
+        else if(row == 4'd5 && (cnt == 7'd0 || cnt == 7'd1 || cnt == 7'd2 || cnt == 7'd5 || cnt == 7'd6)) begin
             R0 <= 1'd0;
-            G0 <= 1'd1;
+            G0 <= 1'd0;
             B0 <= 1'd1;
         end
-        else if(row == 4'd6 && (cnt >= 7'd1 && cnt <= 7'd9 && cnt != 7'd2 && cnt != 7'd8)) begin
-            R0 <= 1'd0;
-            G0 <= 1'd1;
-            B0 <= 1'd1;
-        end
-        else if(row == 4'd7 && (cnt ==7'd0 || cnt ==7'd3 || cnt ==7'd7 || cnt ==7'd10)) begin
-            R0 <= 1'd0;
-            G0 <= 1'd1;
-            B0 <= 1'd1;
-        end
-        // else if(cnt[0] == 0 && cnt[1] == 0 && cnt[2] == 0 && cnt[3] == 0) begin    //multiple of 16
-        //     R0 <= 1'd1;
-        //     R1 <= 1'd1;
-        // end
-
-        // else if(cnt[0] == 0 && cnt[1] == 0 && cnt[2] == 0) begin                   //multiple of 8
-        //     G0 <= 1'd1;
-        //     G1 <= 1'd1;
-        // end
-        // else if(cnt[0] == 0 && cnt[1] == 0) begin                                  //multiple of 4
-        //     B0 <= 1'd1;
-        //     B1 <= 1'd1;
-        // end
-        // else if(cnt[0] == 0) begin                                                 //multiple of 2
-        //     R0 <= 1'd1;
-        //     G0 <= 1'd1;
-        //     B0 <= 1'd1;
-        //     R1 <= 1'd1;
-        //     G1 <= 1'd1;
-        //     B1 <= 1'd1;
-        // end
         else begin
             R0 <= 1'd0;
             G0 <= 1'd0;
@@ -192,3 +161,8 @@ parameter IDLE = 2'd0, GET = 2'd1, TRANSMIT = 2'd2;
     end
 
     endmodule
+
+
+
+
+   

@@ -18,7 +18,7 @@ Multiples of 16 are red.
 Others aren't beaming.
 */
 
-module matrix (
+module matrix1 (
     input clk,
     input rst,                //positive edge
     output reg A, 
