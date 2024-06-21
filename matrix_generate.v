@@ -20,43 +20,11 @@ reg [159:0] R00, R01, R02, R03, R04, R05;// upper registers
 reg [159:0] R10, R11, R12, R13, R14, R15; // lower registers
 //picture registers
 wire [0:159] up_pic = 
-{ 0000000000
-  0000100000
-  0111110000
-  1111101000
-  0011101100
-  1110011000
-  0011101100
-  1111101000
-  0111110000
-  0000100000
-  0000000000
-  0000000000
-  1111110000
-  0011111000
-  0110101100
-  0010111100
-
-                    }
+{ 160'b0000000000_0000100000_0111110000_1111101000_0011101100_1110011000_0011101100_1111101000_0111110000_0000100000_0000000000_0000000000_1111110000_0011111000_0110101100_0010111100
+};
 wire [0:159] down_pic = 
-{ 0110101100
-  0011111000
-  1111110000
-  0000000000
-  0000000000
-  0000000000
-  0000100000
-  1100010100
-  0010111100
-  1111101000
-  0001111000
-  1111101000
-  0010111100
-  1100010100
-  0000100000
-  0000000000
-
-}
+{ 160'b0110101100_0011111000_1111110000_0000000000_0000000000_0000000000_0000100000_1100010100_0010111100_1111101000_0001111000_1111101000_0010111100_1100010100_0000100000_0000000000
+};
 
 //picture of monster1, half of monster2
 
@@ -100,19 +68,19 @@ end
 //tell random to generate random number
 always@(*)begin
      if(btn1)begin
-            if(R00[2][1])
+            if(R00[31])
                 need_random = 1'd1;
             else
                 need_random = 1'd0;
     end
     else if(btn2)begin
-        if(R00[15][2])
+        if(R00[152])
             need_random = 1'd1;
         else
             need_random = 1'd0;
     end
     else if(btn3)begin
-        if(R10[13][0])
+        if(R10[130])
             need_random = 1'd1;
         else
             need_random = 1'd0;
@@ -125,6 +93,7 @@ end
 
 parameter[3:0] IDLE = 3'd0, ready = 3'd1, Gaming = 3'd2, Finish = 3'd3;
 reg [2:0] setupcnt;
+reg [1:0] CS, NS;
 //Register data controll
 always@(posedge clk or posedge rst)begin
     if(rst)begin
@@ -197,7 +166,7 @@ always @(posedge clk ) begin
 end
 
 //change state
-always(*)begin
+always@(*)begin
     case(CS)
         IDLE:begin
             NS <= ready;
@@ -219,9 +188,11 @@ end
 
         
 //put the signals into matrix module
-assign [5:0] register = cnt/6'd10;
-assign [11:0] pixel = cnt - register + row * 6'd6;
-always(*)begin
+wire [5:0] register;
+assign register =  cnt/6'd10;
+wire [11:0] pixel;
+assign pixel = cnt - register + row * 6'd6;
+always@(*)begin
     case(register)
         0:begin
             if(row < 4'd11)begin //row = 0 ~ 10

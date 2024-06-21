@@ -1,3 +1,12 @@
+/*
+LED_top
+clk_div
+clk_div_game
+matrix
+zombie
+lfsr_random_v2
+matrix_generate
+*/
 module LED_top (
     input clk,
     input rst,
@@ -70,11 +79,11 @@ module LED_top (
     );
     wire needs_random;
     lfsr_random_v2  Random(
-        .clk(clk)
+        .clk(clk),
         .btn(need_random),
         .rst(rst),
         .seed(2'd1),
-        .rand_num(rand_num),
+        .rand_num(rand_num)
     );
     wire btn1, btn2, btn3;
     wire [1:0] rand_num;
