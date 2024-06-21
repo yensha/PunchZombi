@@ -8,6 +8,15 @@ module Zombie (
     output reg [3:1] led  // 3 LEDs
 );
 
+parameter[2:0] IDLE = 3'd0, Gaming = 3'd1, Finish = 3'd2; 
+reg[1:0] CS,NS;
+
+always@(posedge clk or posedge rst)begin
+    if(rst)
+        NS = IDLE;
+
+end
+//controll button & led signals
 always @(posedge clk or posedge rst) begin
     if (rst) begin // give random "seed"
         if(btn1)
