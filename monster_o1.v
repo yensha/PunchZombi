@@ -26,6 +26,12 @@ module matrix (
     output reg B,
     output reg C,
     output reg D,
+    input R0in,
+    input G0in,
+    input B0in,
+    input R1in,
+    input G1in,
+    input B1in,
     output reg  R0,
     output reg  G0,
     output reg  B0,
@@ -44,7 +50,7 @@ reg [3:0] row;    // row count
 
 parameter IDLE = 2'd0, GET = 2'd1, TRANSMIT = 2'd2;
 
-    //©w¸qFSM
+    //ï¿½wï¿½qFSM
     always @(posedge clk or posedge rst) begin
         if(rst) CS <= IDLE;
 
