@@ -27,7 +27,7 @@ module LED_top (
     output LAT,
     output clk_shft,
     output clk_game_shft,
-    output reg [3:1]led
+    output [2:0] led
 );
 
     wire clk_shift;
@@ -64,7 +64,7 @@ module LED_top (
     .R1in(R1in),
     .G1in(G1in),
     .B1in(B1in),
-    .cnt(col),
+    .col(col),
     .rows(row),
     .OE(OE),
     .LAT(LAT)
