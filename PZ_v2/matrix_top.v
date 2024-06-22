@@ -45,6 +45,8 @@ module LED_top (
     wire [3:0] row;
     wire [6:0] col;
     wire R0in, R1in, B0in, B1in, G0in, G1in;
+    wire [159:0] R00in, R01in, R02in, R03in, R04in, R05in;
+    wire [159:0] R10in, R11in, R12in, R13in, R14in, R15in;
     matrix m1(
     .clk(clk_shift),
     .rst(rst),               
@@ -58,7 +60,7 @@ module LED_top (
     .R1(R1),
     .G1(G1),
     .B1(B1),
-    .R0in(R0in),
+    .R0in(R0in), //input
     .G0in(G0in),
     .B0in(B0in),
     .R1in(R1in),
@@ -84,31 +86,80 @@ module LED_top (
     wire needs_random;
     wire [1:0] random_num;
     lfsr_random_v2  Random(
-        .clk(clk),
-        .btn(need_random),
+        .clk(clk_shift),
+        .btn(needs_random),
         .rst(rst),
         .seed(2'd1),
         .rand_num(random_num) //output
     );
     //wire btn1in, btn2in, btn3in;
+    wire MD1, MD2, MD3;
+    wire ready, gaming;
+    //Data_Driver
+    Data_Driver DDR(
+        .clk(clk_shift),
+        .rst(rst),
+        .R00in(R00in), //input
+        .R01in(R01in),
+        .R02in(R02in),
+        .R03in(R03in),
+        .R04in(R04in),
+        .R05in(R05in),
+        .R10in(R10in),
+        .R11in(R11in),
+        .R12in(R12in),
+        .R13in(R13in),
+        .R14in(R14in),
+        .R15in(R15in),
+        .gameover(Isgameover),//output
+        .Ready(ready),
+        .Gaming(gaming),
+        .R0(R0in),
+        .R1(R1in),
+        .B0(B0in),
+        .B1(B1in),
+        .G0(G0in),
+        .G1(G1in),
+        .M1Down(MD1),
+        .M2Down(MD2),
+        .M3Down(MD3),
+    );
+    wire shift;
     
-    
-    matrix_generate MG(
-        .clk(clk),
-        .rst(rst), 
-        .col(col),
-        .row(row),
-        .monster_num(random_num), // random(input)
-        .need_random(needs_random),
+    //Detector
+    Detector DTC(
+        .clk(clk_shift), //input
         .btn1(btn1in), //btn1, btn2, btn3
         .btn2(btn2in),
         .btn3(btn3in),
-        .R0(R0in),
-        .B0(B0in),
-        .G0(G0in),
-        .R1(R1in),
-        .B1(B1in),
-        .G1(G1in),
-        .gameover(Isgameover)
+        .MD1(MD1),
+        .MD2(MD2),
+        .MD3(MD3),
+        .initial_(ready),
+        .need_random(needs_random), //output
+        .shift(shift)
     );
+
+    //Picture_shift
+    Picture_shift PTS(
+        .clk(clk_shift),
+        .rst(rst),
+        .random_num(random_num),
+        .shift(shift),
+        .Gaming(gaming),
+        .ready(ready),
+        .R00in(R00in),
+        .R01in(R01in),
+        .R02in(R02in),
+        .R03in(R03in),
+        .R04in(R04in),
+        .R05in(R05in),
+        .R10in(R10in),
+        .R11in(R11in),
+        .R12in(R12in),
+        .R13in(R13in),
+        .R14in(R14in),
+        .R15in(R15in),
+    );
+
 endmodule 
