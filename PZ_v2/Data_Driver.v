@@ -1,0 +1,20 @@
+module Data_diver(
+    input clk,
+    input rst,
+    input R0in,
+    input R1in,
+    input B0in,
+    input B1in,
+    input G0in,
+    input G1in,
+    output Ready,
+    output Gaming,
+    output R0,
+    output R1,
+    output B0,
+    output B1,
+    output G0,
+    output G1,
+    output M1Down,
+    output 
+);
