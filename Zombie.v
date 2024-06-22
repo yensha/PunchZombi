@@ -6,7 +6,7 @@ module Zombie (
     input  btn3,      // Button 3
     //output reg [3:0] output_val, // 4-bit output value
     output gameover,
-    output reg [3:1] led  // 3 LEDs
+    output reg [2:0] led  // 3 LEDs
 );
 
 parameter[2:0] IDLE = 3'd0, Gaming = 3'd1, Finish = 3'd2; 
