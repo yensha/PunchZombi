@@ -113,6 +113,7 @@ always@(posedge clk or posedge rst)begin
             R05 <= 160'd0;
             R15 <= {down_pic[159:50], 40'd0};
         end
+    R05 <= R04   
     end
     else if(CS == Finish)begin
        R00 <= 160'd0;
