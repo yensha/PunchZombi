@@ -92,23 +92,70 @@ module LED_top (
     );
     //wire btn1in, btn2in, btn3in;
     
-    
-    matrix_generate MG(
-        .clk(clk),
-        .rst(rst), 
-        .col(col),
-        .row(row),
-        .monster_num(random_num), // random(input)
-        .need_random(needs_random),
-        .btn1(btn1in), //btn1, btn2, btn3
-        .btn2(btn2in),
-        .btn3(btn3in),
-        .R0(R0in),
-        .B0(B0in),
-        .G0(G0in),
-        .R1(R1in),
-        .B1(B1in),
-        .G1(G1in),
-        .gameover(Isgameover)
+    //Data_Driver
+    Data_Driver DDR(
+        .input clk(),
+        .input rst(),
+        .input R00in(),
+        .input R01in(),
+        .input R02in(),
+        .input R03in(),
+        .input R04in(),
+        .input R05in(),
+        .input R10in(),
+        .input R11in(),
+        .input R12in(),
+        .input R13in(),
+        .input R14in(),
+        .input R15in(),
+        .input gameover(),
+        .output Ready(),
+        .output Gaming(),
+        .output R0(),
+        .output R1(),
+        .output B0(),
+        .output B1(),
+        .output G0(),
+        .output G1(),
+        .output M1Down(),
+        .output M2Down(),
+        .output M3Down(),
     );
+
+    //Detector
+    Detector DTC(
+        .input clk(),
+        .input btn1(), //btn1, btn2, btn3
+        .input btn2(),
+        .input btn3(),
+        .input MD1(),
+        .input MD2(),
+        .input MD3(),
+        .input initial_(),
+        .output need_random(), 
+        .output shift()
+    );
+
+    //Picture_shift
+    Picture_shift PTS(
+        .input clk(),
+        .input rst(),
+        .input random_num(),
+        .input shift(),
+        .input Gaming(),
+        .input ready(),
+        
+        .output R01in(),
+        .output R02in(),
+        .output R03in(),
+        .output R04in(),
+        .output R05in(),
+        .output R10in(),
+        .output R11in(),
+        .output R12in(),
+        .output R13in(),
+        .output R14in(),
+        .output R15in(),
+    );
+
 endmodule 
