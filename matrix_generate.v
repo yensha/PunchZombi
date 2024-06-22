@@ -28,17 +28,6 @@ wire [159:0] down_pic =
 
 //picture of monster1, half of monster2
 reg shift ;// tell the picture to shift
-pic_DFF pic_DFF0( .clk(clk), .rst(rst), .shift(shift), .D(R05), .Q(R04));
-pic_DFF pic_DFF1( .clk(clk), .rst(rst), .shift(shift), .D(R04), .Q(R03));
-pic_DFF pic_DFF2( .clk(clk), .rst(rst), .shift(shift), .D(R03), .Q(R02));
-pic_DFF pic_DFF3( .clk(clk), .rst(rst), .shift(shift), .D(R02), .Q(R01));
-pic_DFF pic_DFF4( .clk(clk), .rst(rst), .shift(shift), .D(R01), .Q(R00));
-
-pic_DFF pic_DFF5( .clk(clk), .rst(rst), .shift(shift), .D(R15), .Q(R14));
-pic_DFF pic_DFF6( .clk(clk), .rst(rst), .shift(shift), .D(R14), .Q(R13));
-pic_DFF pic_DFF7( .clk(clk), .rst(rst), .shift(shift), .D(R13), .Q(R12));
-pic_DFF pic_DFF8( .clk(clk), .rst(rst), .shift(shift), .D(R12), .Q(R11));
-pic_DFF pic_DFF9( .clk(clk), .rst(rst), .shift(shift), .D(R11), .Q(R10));
 
 //------------------------detector------------------------------
 
@@ -141,6 +130,17 @@ always@(posedge clk or posedge rst)begin
     end
 
 end
+pic_DFF pic_DFF0( .clk(clk), .rst(rst), .shift(shift), .D(R05), .Q(R04));
+pic_DFF pic_DFF1( .clk(clk), .rst(rst), .shift(shift), .D(R04), .Q(R03));
+pic_DFF pic_DFF2( .clk(clk), .rst(rst), .shift(shift), .D(R03), .Q(R02));
+pic_DFF pic_DFF3( .clk(clk), .rst(rst), .shift(shift), .D(R02), .Q(R01));
+pic_DFF pic_DFF4( .clk(clk), .rst(rst), .shift(shift), .D(R01), .Q(R00));
+
+pic_DFF pic_DFF5( .clk(clk), .rst(rst), .shift(shift), .D(R15), .Q(R14));
+pic_DFF pic_DFF6( .clk(clk), .rst(rst), .shift(shift), .D(R14), .Q(R13));
+pic_DFF pic_DFF7( .clk(clk), .rst(rst), .shift(shift), .D(R13), .Q(R12));
+pic_DFF pic_DFF8( .clk(clk), .rst(rst), .shift(shift), .D(R12), .Q(R11));
+pic_DFF pic_DFF9( .clk(clk), .rst(rst), .shift(shift), .D(R11), .Q(R10));
 
 //state
 always@(posedge clk or posedge rst)begin
