@@ -99,6 +99,8 @@ module LED_top (
     Data_Driver DDR(
         .clk(clk_shift),
         .rst(rst),
+        .col(col),
+        .row(row),
         .R00in(R00in), //input
         .R01in(R01in),
         .R02in(R02in),

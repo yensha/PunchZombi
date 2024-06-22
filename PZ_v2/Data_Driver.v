@@ -1,33 +1,35 @@
 module Data_diver(
     input clk,
     input rst,
-    input R00in,
-    input R01in,
-    input R02in,
-    input R03in,
-    input R04in,
-    input R05in,
-    input R10in,
-    input R11in,
-    input R12in,
-    input R13in,
-    input R14in,
-    input R15in,
+    input col,
+    input row,
+    input [159:0] R00in,
+    input [159:0] R01in,
+    input [159:0] R02in,
+    input [159:0] R03in,
+    input [159:0] R04in,
+    input [159:0] R05in,
+    input [159:0] R10in,
+    input [159:0] R11in,
+    input [159:0] R12in,
+    input [159:0] R13in,
+    input [159:0] R14in,
+    input [159:0] R15in,
     input gameover,
-    output Ready,
-    output Gaming,
-    output R0,
-    output R1,
-    output B0,
-    output B1,
-    output G0,
-    output G1,
+    output reg Ready,
+    output reg Gaming,
+    output reg R0,
+    output reg R1,
+    output reg B0,
+    output reg B1,
+    output reg G0,
+    output reg G1,
     output M1Down,
     output M2Down,
-    output M3Down,
+    output M3Down
 );
 
-parameter[3:0] IDLE = 3'd0, ready = 3'd1, Gaming = 3'd2, Finish = 3'd3;
+parameter[3:0] IDLE = 3'd0, ready = 3'd1, NowGaming = 3'd2, Finish = 3'd3;
 reg [2:0] setupcnt;
 reg [1:0] CS, NS;
 //state
@@ -52,7 +54,7 @@ always @(posedge clk or posedge rst) begin
     else begin
         if(NS == ready)
             Ready <= 1'd1;
-        else if(NS == Gaming)
+        else if(NS == NowGaming)
             Ready <= 1'd0;    
     end
 end
@@ -62,7 +64,7 @@ always @(posedge clk or posedge rst)begin
     if(rst)
         Gaming <= 1'd0;
     else begin
-        if(NS == Gaming)
+        if(NS == NowGaming)
             Gaming <= 1'd1;
         else if(NS == Finish)
             Gaming <= 1'd0;
@@ -173,65 +175,65 @@ always@(*)begin
                     B1 = 1'd0;
                     G1 = R11in[pixel];
                 end
-                R0 = R03[pixel];
+                R0 = R03in[pixel];
                 B0 = 1'd0;
-                G0 = R03[pixel];
+                G0 = R03in[pixel];
                 R1 = 1'd0;
-                B1 = R13[pixel];
+                B1 = R13in[pixel];
                 G1 = 1'd0;
             end
             else begin
                 R0 = 1'd0;
                 B0 = 1'd0;
-                G0 = R03[pixel];
+                G0 = R03in[pixel];
                 R1 = 1'd0;
-                B1 = R13[pixel];
+                B1 = R13in[pixel];
                 G1 = 1'd0;
             end
         end
         4:begin
             if(row < 4'd11)begin //row = 0 ~ 10
                 if(row < 4'd6)begin
-                    R1 = R14[pixel];
+                    R1 = R14in[pixel];
                     B1 = 1'd0;
-                    G1 = R14[pixel];
+                    G1 = R14in[pixel];
                 end
-                R0 = R04[pixel];
+                R0 = R04in[pixel];
                 B0 = 1'd0;
-                G0 = R04[pixel];
+                G0 = R04in[pixel];
                 R1 = 1'd0;
-                B1 = R14[pixel];
+                B1 = R14in[pixel];
                 G1 = 1'd0;
             end
             else begin
                 R0 = 1'd0;
                 B0 = 1'd0;
-                G0 = R04[pixel];
+                G0 = R04in[pixel];
                 R1 = 1'd0;
-                B1 = R14[pixel];
+                B1 = R14in[pixel];
                 G1 = 1'd0;
             end
         end
         5:begin
             if(row < 4'd11)begin //row = 0 ~ 10
                 if(row < 4'd6)begin
-                    R1 = R15[pixel];
+                    R1 = R15in[pixel];
                     B1 = 1'd0;
-                    G1 = R15[pixel];
+                    G1 = R15in[pixel];
                 end
-                R0 = R05[pixel];
+                R0 = R05in[pixel];
                 B0 = 1'd0;
-                G0 = R05[pixel];
+                G0 = R05in[pixel];
                 R1 = 1'd0;
-                B1 = R15[pixel];
+                B1 = R15in[pixel];
                 G1 = 1'd0;
             end
             else begin
                 R0 = 1'd0;
                 B0 = 1'd0;
-                G0 = R05[pixel];
+                G0 = R05in[pixel];
                 R1 = 1'd0;
-                B1 = R15[pixel];
+                B1 = R15in[pixel];
                 G1 = 1'd0;
             end
         end
