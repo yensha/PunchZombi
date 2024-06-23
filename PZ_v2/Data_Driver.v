@@ -1,8 +1,8 @@
 module Data_diver(
     input clk,
     input rst,
-    input col,
-    input row,
+    input [6:0]col,
+    input [3:0] row,
     input [159:0] R00in,
     input [159:0] R01in,
     input [159:0] R02in,
@@ -24,9 +24,9 @@ module Data_diver(
     output reg B1,
     output reg G0,
     output reg G1,
-    output M1Down,
-    output M2Down,
-    output M3Down
+    output reg M1Down,
+    output reg M2Down,
+    output reg M3Down
 );
 
 parameter[3:0] IDLE = 3'd0, ready = 3'd1, NowGaming = 3'd2, Finish = 3'd3;
@@ -44,8 +44,12 @@ end
 always@(posedge clk or posedge rst)begin
     if(rst)
         setupcnt <= 3'd0;
-    else if(CS == ready)
-        setupcnt <= setupcnt + 3'd1;
+    else if(CS == ready)begin
+        if(setupcnt == 3'd6)
+            setupcnt <= 3'd0;
+        else
+            setupcnt <= setupcnt + 3'd1;
+    end
 end
 //need_random
 always @(posedge clk or posedge rst) begin
@@ -79,7 +83,7 @@ always@(*)begin
         end
         ready:begin
             if(setupcnt == 3'd6)
-                NS <= Gaming;
+                NS <= NowGaming;
             else
                 NS <= ready;
         end
@@ -91,12 +95,33 @@ always@(*)begin
         end
     endcase
 end
-
+//detect if the monster is on row 0
+always@(posedge clk or posedge rst)begin
+    if(rst)begin
+        M1Down = 1'd0;
+        M2Down = 1'd0;
+        M3Down = 1'd0;
+    end
+    else begin
+        if(R00in[31])
+            M1Down = 1'd1;
+        else
+            M1Down = 1'd0;
+        if(R00in[152]) //row 14 col 2
+            M2Down = 1'd1;
+        else
+            M2Down = 1'd0;
+        if(R10in[130])
+            M3Down = 1'd1;
+        else
+            M3Down = 1'd0;
+    end
+end
 //put the signals into matrix module
 wire [5:0] register;
 assign register =  col /6'd10;
 wire [11:0] pixel;
-assign pixel = col - register + row * 6'd6;
+assign pixel = col % 6'd10 + row * 6'd10;
 always@(*)begin
     case(register)
         0:begin

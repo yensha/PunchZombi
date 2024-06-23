@@ -1,8 +1,8 @@
 module matrix_generate(
     input clk,
     input rst, 
-    input col,
-    input row,
+    input [6:0] col,
+    input [3:0] row,
     input [1:0] monster_num, // random
     input btn1, //btn1, btn2, btn3
     input btn2,

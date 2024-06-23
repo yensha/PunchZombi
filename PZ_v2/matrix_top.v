@@ -30,9 +30,9 @@ module LED_top (
     output [2:0] led
 );
 
-    wire clk_shift;
+    wire clk_shif, clk_div_game_shift;
     assign clk_shft = clk_shift;
-
+    assign clk_game_shft = clk_div_game_shift;
     clk_div clk_div_0(.clk(clk),
                 .rst(rst),
                 .clk_div(clk_shift)
@@ -66,16 +66,16 @@ module LED_top (
     .R1in(R1in),
     .G1in(G1in),
     .B1in(B1in),
+    .ready(ready),
     .col(col),
     .rows(row),
     .OE(OE),
     .LAT(LAT)
 );
-    wire clk_game_shift;
-    assign clk_game_shft = clk_game_shift;
+
     wire Isgameover;
     Zombie zombie(
-        .clk(clk_game_shift),
+        .clk(clk_div_game_shift),
         .rst(rst),
         .btn1(btn1in),      // Button 1
         .btn2(btn2in),      // Button 2
@@ -83,20 +83,22 @@ module LED_top (
         .gameover(Isgameover),
         .led(led)  
     );
+    wire ready, gaming;
     wire needs_random;
     wire [1:0] random_num;
     lfsr_random_v2  Random(
         .clk(clk_shift),
-        .btn(needs_random),
+        .generate_random(needs_random), //when Gaming
+        .initial_(ready), //in ready state
         .rst(rst),
         .seed(2'd1),
         .rand_num(random_num) //output
     );
     //wire btn1in, btn2in, btn3in;
     wire MD1, MD2, MD3;
-    wire ready, gaming;
+   
     //Data_Driver
-    Data_Driver DDR(
+    Data_diver DDR(
         .clk(clk_shift),
         .rst(rst),
         .col(col),
@@ -131,25 +133,27 @@ module LED_top (
     //Detector
     Detector DTC(
         .clk(clk_shift), //input
+        .rst(rst),
         .btn1(btn1in), //btn1, btn2, btn3
         .btn2(btn2in),
         .btn3(btn3in),
         .MD1(MD1),
         .MD2(MD2),
         .MD3(MD3),
-        .initial_(ready),
         .need_random(needs_random), //output
         .shift(shift)
+         
     );
 
     //Picture_shift
-    Picture_shifter PTS(
+    Picture_Shifter PTS(
         .clk(clk_shift),
         .rst(rst),
-        .random_num(random_num),
+        .monster_num(random_num),
         .shift(shift),
         .Gaming(gaming),
         .ready(ready),
+        .gameover(Isgameover),
         .R00in(R00in),
         .R01in(R01in),
         .R02in(R02in),

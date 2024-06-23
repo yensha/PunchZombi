@@ -7,7 +7,7 @@ module LED_top_tb;
     reg btn1in;
     reg btn2in;
     reg btn3in;
-    wire A;
+    wire A; 
     wire B;
     wire C;
     wire D;
@@ -23,14 +23,14 @@ module LED_top_tb;
     wire clk_game_shft;
     wire [2:0] led;
 
-    // Instantiate the LED_top module
+    // Instantiate the DUT (Device Under Test)
     LED_top uut (
         .clk(clk),
         .rst(rst),
         .btn1in(btn1in),
         .btn2in(btn2in),
         .btn3in(btn3in),
-        .A(A),
+        .A(A), 
         .B(B),
         .C(C),
         .D(D),
@@ -50,47 +50,62 @@ module LED_top_tb;
     // Clock generation
     initial begin
         clk = 0;
-        forever #5 clk = ~clk; // 100 MHz clock
+        forever #4 clk = ~clk; // 125 MHz clock period (8 ns)
     end
-
-    // Test sequence
+    integer i, j;
+    // Testbench logic
     initial begin
+        
+        
         // Initialize inputs
         rst = 1;
         btn1in = 0;
         btn2in = 0;
         btn3in = 0;
 
-        // Reset sequence
+        // Reset pulse
         #20;
         rst = 0;
 
-        // Apply button inputs and observe outputs
+        // Wait for 7 clock cycles (56 ns)
+        repeat (7) @(posedge clk);
+        
+        // Wait for 30 seconds of simulation time using nested for loops
+        for (i = 0; i < 125000000; i = i + 1) begin
+            #8; // 8 ns per iteration
+        end
+
+        // Provide signals to btn1in, btn2in, and btn3in
         #100;
         btn1in = 1;
         #10;
         btn1in = 0;
 
-        #100;
+        #200;
         btn2in = 1;
         #10;
         btn2in = 0;
 
-        #100;
+        #300;
         btn3in = 1;
         #10;
         btn3in = 0;
 
-        // Add more test sequences as needed
-        #1000;
+        // Wait for 30 seconds of simulation time using nested for loops
+        for (i = 0; i < 125000000; i = i + 1) begin
+            for (j = 0; j < 30; j = j + 1) begin 
+                #8; // 8 ns per iteration
+            end
+        end
 
-        $finish;
+        // End simulation
+        $stop;
     end
 
-    // Monitor outputs
+    // Optional: monitor signals
     initial begin
-        $monitor("Time: %0dns, rst = %b, btn1in = %b, btn2in = %b, btn3in = %b, A = %b, B = %b, C = %b, D = %b, R0 = %b, G0 = %b, B0 = %b, R1 = %b, G1 = %b, B1 = %b, OE = %b, LAT = %b, clk_shft = %b, clk_game_shft = %b, led = %b", 
-                 $time, rst, btn1in, btn2in, btn3in, A, B, C, D, R0, G0, B0, R1, G1, B1, OE, LAT, clk_shft, clk_game_shft, led);
+        $monitor("Time=%0t, rst=%b, btn1in=%b, btn2in=%b, btn3in=%b, led=%b, A=%b, B=%b, C=%b, D=%b, R0=%b, G0=%b, B0=%b, R1=%b, G1=%b, B1=%b, OE=%b, LAT=%b, clk_shft=%b, clk_game_shft=%b", 
+                  $time, rst, btn1in, btn2in, btn3in, led, A, B, C, D, R0, G0, B0, R1, G1, B1, OE, LAT, clk_shft, clk_game_shft);
     end
 
 endmodule

@@ -1,6 +1,7 @@
 module lfsr_random_v2 (
     input clk,
     input wire generate_random,
+    input wire initial_,
     input wire rst,
     input wire [1:0] seed,
     output reg [1:0] rand_num
@@ -31,7 +32,7 @@ reg [25:0] cnt;
     always @(posedge clk or posedge rst) begin
         if (rst) begin
             lfsr <= seed;
-        end else if(generate_random)begin
+        end else if(generate_random || initial_)begin
             // LFSR feedback polynomial for 2-bit: x^2 + x + 1
             lfsr <= {lfsr[0], lfsr[1]^clk_div};
         end
@@ -40,7 +41,7 @@ reg [25:0] cnt;
     always @(posedge clk or posedge rst) begin
         if (rst) begin
             rand_num <= 2'b00;
-        end else if(generate_random)begin
+        end else if(generate_random || initial_)begin
             // Ensure rand_num is between 1 and 3
             rand_num <= (lfsr % 3) + 1;
         end

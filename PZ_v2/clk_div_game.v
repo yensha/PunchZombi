@@ -7,7 +7,7 @@ module clk_div_game (
     reg [31:0] count;
 
     // Set the division factor for 1-second period
-    parameter DIV_FACTOR = 125000000;
+    parameter DIV_FACTOR = 62500000;
 
     always @(posedge clk or posedge rst) begin
         if (rst) begin

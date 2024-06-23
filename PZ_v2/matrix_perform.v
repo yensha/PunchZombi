@@ -26,6 +26,7 @@ module matrix (
     output reg B,
     output reg C,
     output reg D,
+    input ready,
     input R0in,
     input G0in,
     input B0in,
@@ -38,8 +39,8 @@ module matrix (
     output reg  R1,
     output reg  G1,
     output reg  B1,
-    output  reg col,
-    output  reg rows,
+    output reg [6:0] col,
+    output reg [3:0] rows,
     output reg OE,
     output reg LAT
 );
@@ -79,7 +80,7 @@ parameter IDLE = 2'd0, GET = 2'd1, TRANSMIT = 2'd2;
         if(rst)               cnt <= 7'd0;
 
         else if(cnt == 7'd64) cnt <= 7'd0;
-
+        else if(ready) cnt <= 7'd0;
         else if(CS == GET)    cnt <= cnt + 7'd1;
         else                  cnt <= cnt;
     end
