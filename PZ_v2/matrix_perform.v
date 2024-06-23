@@ -27,6 +27,7 @@ module matrix (
     output reg C,
     output reg D,
     input ready,
+    input gaming,
     input R0in,
     input G0in,
     input B0in,
@@ -39,21 +40,22 @@ module matrix (
     output reg  R1,
     output reg  G1,
     output reg  B1,
-    output reg [6:0] col,
+    output reg [6:0] cols,
     output reg [3:0] rows,
     output reg OE,
     output reg LAT
 );
 
 
+
 reg [1:0] CS, NS;
-reg [6:0] cnt;    // column count
+reg [6:0] col;    // column count
 reg [3:0] row;    // row count
 
+localparam START = 2'd0, MENU = 2'd1, PLAY = 2'd2, FINISH = 2'd3;     // game   control
+localparam IDLE = 2'd0, DELAY = 2'd1, GET = 2'd2, TRANSMIT = 2'd3;    // matrix perform
 
-parameter IDLE = 2'd0, GET = 2'd1, TRANSMIT = 2'd2;
-
-    //�w�qFSM
+    //FSM
     always @(posedge clk or posedge rst) begin
         if(rst) CS <= IDLE;
 
@@ -63,9 +65,11 @@ parameter IDLE = 2'd0, GET = 2'd1, TRANSMIT = 2'd2;
     always @(*) begin
         case(CS)
 
-            IDLE: NS = GET;
+            IDLE: NS = DELAY;
 
-            GET: NS =(cnt == 7'd64)? TRANSMIT : GET;    //count 64 column
+            DELAY: NS = GET;
+
+            GET: NS = (col == 7'd64)? TRANSMIT : GET;    //count 64 column
 
             TRANSMIT: NS = IDLE;
 
@@ -77,12 +81,12 @@ parameter IDLE = 2'd0, GET = 2'd1, TRANSMIT = 2'd2;
 
     //column count
     always @(posedge clk or posedge rst) begin
-        if(rst)               cnt <= 7'd0;
+        if(rst)               col <= 7'd0;
 
-        else if(cnt == 7'd64) cnt <= 7'd0;
-        else if(ready) cnt <= 7'd0;
-        else if(CS == GET)    cnt <= cnt + 7'd1;
-        else                  cnt <= cnt;
+        else if(CS == DELAY)  col <= 7'd0;
+
+        else if(CS == GET)    col <= col + 7'd1;
+        else                  col <= col;
     end
 
 
@@ -93,12 +97,31 @@ parameter IDLE = 2'd0, GET = 2'd1, TRANSMIT = 2'd2;
         else if(CS == TRANSMIT) row <= row + 4'd1;
     end
 
+//output
+
+    //row output
+    always @(*) begin
+        {D, C, B, A} = row - 4'd1;
+    end
+    
+    // //column count
+    // always @(posedge clk or posedge rst) begin
+    //     if(rst)               cnt <= 7'd0;
+
+    //     else if(cnt == 7'd64) cnt <= 7'd0;
+        
+    //     else if(CS == GET)    cnt <= cnt + 7'd1;
+    //     else                  cnt <= cnt;
+    // end
+
+
+
 //output the signal of row and column
 always @(*) begin
     if(rst)
-        col = 7'd0;
+        cols = 7'd0;
     else 
-        col = cnt;
+        cols = col;
 end
 always @(*) begin
     if(rst)
@@ -108,11 +131,6 @@ always @(*) begin
 end
 //output
 
-    //row output
-    always @(*) begin
-        {D, C, B, A} = row;
-    end
-    
      //RGB output
     always @(posedge clk or posedge rst) begin
         if(rst)begin
@@ -132,7 +150,7 @@ end
             B1 <= B1in;
         end    
     end
-    //OE, LAT output
+     //OE, LAT output
     always @(posedge clk or posedge rst) begin
         if(rst) begin
             OE  <= 1'd0;
@@ -140,12 +158,18 @@ end
         end
 
         else begin
+
+            if(NS == DELAY) begin
+                OE  <= 1'd0;
+                LAT <= 1'd0;
+            end
+
             if(NS == GET) begin
                 OE  <= 1'd1;
                 LAT <= 1'd0;
             end
             else if(NS == TRANSMIT) begin
-                OE  <= 1'd0;
+                OE  <= 1'd1;
                 LAT <= 1'd1;
             end
             else if(NS == IDLE) begin
@@ -157,71 +181,8 @@ end
 
     endmodule
 
-    // if(rst) begin
-    //         R0 <= 1'd0;
-    //         G0 <= 1'd0;
-    //         B0 <= 1'd0;
-    //         R1 <= 1'd0;
-    //         G1 <= 1'd0;
-    //         B1 <= 1'd0;
-    //     end
-    //     else if((row == 4'd1 || row == 4'd9) && (cnt == 7'd4)) begin
-    //         R0 <= 1'd0;
-    //         G0 <= 1'd1;
-    //         B0 <= 1'd1;
-    //     end
-    //     // else if((row == 4'd0 || row == 4'd) && (cnt == 7'd3 || cnt == 7'd7)) begin
-    //     //     R0 <= 1'd0;
-    //     //     G0 <= 1'd1;
-    //     //     B0 <= 1'd1;
-    //     // end
-    //     else if((row == 4'd2 || row == 4'd8) && (cnt >= 7'd1 || cnt <= 7'd5)) begin
-    //         R0 <= 1'd0;
-    //         G0 <= 1'd1;
-    //         B0 <= 1'd1;
-    //     end
-    //     else if((row == 4'd3 || row == 4'd7) && (cnt >= 7'd0 && cnt <= 7'd6 && cnt != 7'd5)) begin 
-    //         R0 <= 1'd0;
-    //         G0 <= 1'd1;
-    //         B0 <= 1'd1;
-    //     end
-    //     else if((row == 4'd4 || row == 4'd6) && (cnt >= 7'd2 && cnt <= 7'd7 && cnt != 7'd5)) begin
-    //         R0 <= 1'd0;
-    //         G0 <= 1'd1;
-    //         B0 <= 1'd1;
-    //     end
-    //     else if(row == 4'd5 && (cnt >= 7'd0 && cnt <= 7'd6 && cnt != 7'd3 && cnt != 7'd4)) begin
-    //         R0 <= 1'd0;
-    //         G0 <= 1'd1;
-    //         B0 <= 1'd1;
-    //     end
-    //     // else if(cnt[0] == 0 && cnt[1] == 0 && cnt[2] == 0 && cnt[3] == 0) begin    //multiple of 16
-    //     //     R0 <= 1'd1;
-    //     //     R1 <= 1'd1;
-    //     // end
+    
 
-    //     // else if(cnt[0] == 0 && cnt[1] == 0 && cnt[2] == 0) begin                   //multiple of 8
-    //     //     G0 <= 1'd1;
-    //     //     G1 <= 1'd1;
-    //     // end
-    //     // else if(cnt[0] == 0 && cnt[1] == 0) begin                                  //multiple of 4
-    //     //     B0 <= 1'd1;
-    //     //     B1 <= 1'd1;
-    //     // end
-    //     // else if(cnt[0] == 0) begin                                                 //multiple of 2
-    //     //     R0 <= 1'd1;
-    //     //     G0 <= 1'd1;
-    //     //     B0 <= 1'd1;
-    //     //     R1 <= 1'd1;
-    //     //     G1 <= 1'd1;
-    //     //     B1 <= 1'd1;
-    //     // end
-    //     else begin
-    //         R0 <= 1'd0;
-    //         G0 <= 1'd0;
-    //         B0 <= 1'd0;
-    //         R1 <= 1'd0;
-    //         G1 <= 1'd0;
-    //         B1 <= 1'd0;
-    //     end
-    // end
+    
+
+   

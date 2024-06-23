@@ -42,9 +42,9 @@ module LED_top_tb;
         .B1(B1),
         .OE(OE),
         .LAT(LAT),
-        .clk_shft(clk_shft),
-        .clk_game_shft(clk_game_shft),
-        .led(led)
+        .clk_shft(clk_shft)
+        //.clk_game_shft(clk_game_shft),
+        //.led(led)
     );
 
     // Clock generation

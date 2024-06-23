@@ -25,14 +25,14 @@ module LED_top (
     output B1,
     output OE,
     output LAT,
-    output clk_shft,
-    output clk_game_shft,
-    output [2:0] led
+    output clk_shft
+    //output clk_game_shft
+    //output [2:0] led
 );
-
+    wire ready, gaming;
     wire clk_shif, clk_div_game_shift;
     assign clk_shft = clk_shift;
-    assign clk_game_shft = clk_div_game_shift;
+    //assign clk_game_shft = clk_div_game_shift;
     clk_div clk_div_0(.clk(clk),
                 .rst(rst),
                 .clk_div(clk_shift)
@@ -67,7 +67,8 @@ module LED_top (
     .G1in(G1in),
     .B1in(B1in),
     .ready(ready),
-    .col(col),
+    .gaming(gaming),
+    .cols(col),
     .rows(row),
     .OE(OE),
     .LAT(LAT)
@@ -80,10 +81,10 @@ module LED_top (
         .btn1(btn1in),      // Button 1
         .btn2(btn2in),      // Button 2
         .btn3(btn3in),      // Button 3
-        .gameover(Isgameover),
-        .led(led)  
+        .gameover(Isgameover)
+        //.led(led)  
     );
-    wire ready, gaming;
+    
     wire needs_random;
     wire [1:0] random_num;
     lfsr_random_v2  Random(

@@ -1,7 +1,7 @@
 module Data_diver(
     input clk,
     input rst,
-    input [6:0]col,
+    input [6:0] col,
     input [3:0] row,
     input [159:0] R00in,
     input [159:0] R01in,
@@ -79,13 +79,13 @@ end
 always@(*)begin
     case(CS)
         IDLE:begin
-            NS <= ready;
+            NS = ready;
         end
         ready:begin
             if(setupcnt == 3'd6)
-                NS <= NowGaming;
+                NS = NowGaming;
             else
-                NS <= ready;
+                NS = ready;
         end
         Gaming:begin
             if(gameover)
@@ -102,16 +102,30 @@ always@(posedge clk or posedge rst)begin
         M2Down = 1'd0;
         M3Down = 1'd0;
     end
+    // else begin
+    //     if(R00in[99:0] == 100'd1)
+    //         M1Down = 1'd1;
+    //     else
+    //         M1Down = 1'd0;
+    //     if(R00in[159:100] == 60'd1) //row 14 col 2
+    //         M2Down = 1'd1;
+    //     else
+    //         M2Down = 1'd0;
+    //     if(R10in[159:100] == 160'd1)
+    //         M3Down = 1'd1;
+    //     else
+    //         M3Down = 1'd0;
+    // end
     else begin
-        if(R00in[31])
+        if(1'd1)
             M1Down = 1'd1;
         else
             M1Down = 1'd0;
-        if(R00in[152]) //row 14 col 2
+        if(1'd1) //row 14 col 2
             M2Down = 1'd1;
         else
             M2Down = 1'd0;
-        if(R10in[130])
+        if(1'd1)
             M3Down = 1'd1;
         else
             M3Down = 1'd0;
@@ -131,18 +145,20 @@ always@(*)begin
                     B1 = 1'd0;
                     G1 = R10in[pixel];
                 end
+                else begin
+                    R1 = R10in[pixel];
+                    B1 = R10in[pixel];
+                    G1 = 1'd0;
+                end
+                R0 = 1'd0;
+                B0 = R00in[pixel];
+                G0 = 1'd0;
+            end
+            else begin
                 R0 = R00in[pixel];
                 B0 = 1'd0;
                 G0 = R00in[pixel];
-                R1 = 1'd0;
-                B1 = R10in[pixel];
-                G1 = 1'd0;
-            end
-            else begin
-                R0 = 1'd0;
-                B0 = 1'd0;
-                G0 = R00in[pixel];
-                R1 = 1'd0;
+                R1 = R10in[pixel];
                 B1 = R10in[pixel];
                 G1 = 1'd0;
             end
@@ -154,18 +170,20 @@ always@(*)begin
                     B1 = 1'd0;
                     G1 = R11in[pixel];
                 end
+                else begin
+                    R1 = R11in[pixel];
+                    B1 = R11in[pixel];
+                    G1 = 1'd0;
+                end
+                R0 = 1'd0;
+                B0 = R01in[pixel];
+                G0 = 1'd0;
+            end
+            else begin
                 R0 = R01in[pixel];
                 B0 = 1'd0;
                 G0 = R01in[pixel];
-                R1 = 1'd0;
-                B1 = R11in[pixel];
-                G1 = 1'd0;
-            end
-            else begin
-                R0 = 1'd0;
-                B0 = 1'd0;
-                G0 = R01in[pixel];
-                R1 = 1'd0;
+                R1 = R11in[pixel];
                 B1 = R11in[pixel];
                 G1 = 1'd0;
             end
@@ -177,18 +195,20 @@ always@(*)begin
                     B1 = 1'd0;
                     G1 = R12in[pixel];
                 end
+                else begin
+                    R1 = R12in[pixel];
+                    B1 = R12in[pixel];
+                    G1 = 1'd0;
+                end
+                R0 = 1'd0;
+                B0 = R02in[pixel];
+                G0 = 1'd0;
+            end
+            else begin
                 R0 = R02in[pixel];
                 B0 = 1'd0;
                 G0 = R02in[pixel];
-                R1 = 1'd0;
-                B1 = R12in[pixel];
-                G1 = 1'd0;
-            end
-            else begin
-                R0 = 1'd0;
-                B0 = 1'd0;
-                G0 = R02in[pixel];
-                R1 = 1'd0;
+                R1 = R12in[pixel];
                 B1 = R12in[pixel];
                 G1 = 1'd0;
             end
@@ -198,20 +218,22 @@ always@(*)begin
                 if(row < 4'd6)begin
                     R1 = R13in[pixel];
                     B1 = 1'd0;
-                    G1 = R11in[pixel];
+                    G1 = R13in[pixel];
                 end
+                else begin
+                    R1 = R13in[pixel];
+                    B1 = R13in[pixel];
+                    G1 = 1'd0;
+                end
+                R0 = 1'd0;
+                B0 = R03in[pixel];
+                G0 = 1'd0;
+            end
+            else begin
                 R0 = R03in[pixel];
                 B0 = 1'd0;
                 G0 = R03in[pixel];
-                R1 = 1'd0;
-                B1 = R13in[pixel];
-                G1 = 1'd0;
-            end
-            else begin
-                R0 = 1'd0;
-                B0 = 1'd0;
-                G0 = R03in[pixel];
-                R1 = 1'd0;
+                R1 = R13in[pixel];
                 B1 = R13in[pixel];
                 G1 = 1'd0;
             end
@@ -223,18 +245,20 @@ always@(*)begin
                     B1 = 1'd0;
                     G1 = R14in[pixel];
                 end
+                else begin
+                    R1 = R14in[pixel];
+                    B1 = R14in[pixel];
+                    G1 = 1'd0;
+                end
+                R0 = 1'd0;
+                B0 = R04in[pixel];
+                G0 = 1'd0;
+            end
+            else begin
                 R0 = R04in[pixel];
                 B0 = 1'd0;
                 G0 = R04in[pixel];
-                R1 = 1'd0;
-                B1 = R14in[pixel];
-                G1 = 1'd0;
-            end
-            else begin
-                R0 = 1'd0;
-                B0 = 1'd0;
-                G0 = R04in[pixel];
-                R1 = 1'd0;
+                R1 = R14in[pixel];
                 B1 = R14in[pixel];
                 G1 = 1'd0;
             end
@@ -246,18 +270,20 @@ always@(*)begin
                     B1 = 1'd0;
                     G1 = R15in[pixel];
                 end
+                else begin
+                    R1 = R15in[pixel];
+                    B1 = R15in[pixel];
+                    G1 = 1'd0;
+                end
+                R0 = 1'd0;
+                B0 = R05in[pixel];
+                G0 = 1'd0;
+            end
+            else begin
                 R0 = R05in[pixel];
                 B0 = 1'd0;
                 G0 = R05in[pixel];
-                R1 = 1'd0;
-                B1 = R15in[pixel];
-                G1 = 1'd0;
-            end
-            else begin
-                R0 = 1'd0;
-                B0 = 1'd0;
-                G0 = R05in[pixel];
-                R1 = 1'd0;
+                R1 = R15in[pixel];
                 B1 = R15in[pixel];
                 G1 = 1'd0;
             end
