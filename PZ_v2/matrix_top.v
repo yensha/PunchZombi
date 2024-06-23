@@ -124,7 +124,7 @@ module LED_top (
         .G1(G1in),
         .M1Down(MD1),
         .M2Down(MD2),
-        .M3Down(MD3),
+        .M3Down(MD3)
     );
     wire shift;
     
@@ -143,7 +143,7 @@ module LED_top (
     );
 
     //Picture_shift
-    Picture_shift PTS(
+    Picture_shifter PTS(
         .clk(clk_shift),
         .rst(rst),
         .random_num(random_num),
@@ -161,7 +161,7 @@ module LED_top (
         .R12in(R12in),
         .R13in(R13in),
         .R14in(R14in),
-        .R15in(R15in),
+        .R15in(R15in)
     );
 
 endmodule 
