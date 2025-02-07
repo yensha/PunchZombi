@@ -3,9 +3,9 @@
 ## Introduction
 HitZombi is a zombie-shooting game based on FPGA and LED matrix display technology, using the **PYNQ-Z2** development board and a **32×64 LED matrix screen** to present the game visuals.
 
-![image](https://github.com/user-attachments/assets/b9fcb5a3-5a06-4287-b6a9-1a841a4ed1f1)
+![image](https://github.com/user-attachments/assets/b9fcb5a3-5a06-4287-b6a9-1a841a4ed1f1 =250x250)
+
 ShotZombie is a casual game developed by Capsule+ (面白革命capsule+). The best platform to play ShotZombie on a computer is through the Thunder Emulator, which provides powerful features for an immersive gaming experience.
-HitZombi is a zombie-shooting game based on FPGA and LED matrix display technology, using the **PYNQ-Z2** development board and a **32×64 LED matrix screen** to present the game visuals.
 
 ## Main Features
 - **FPGA Control**: Game logic is designed using Verilog.
@@ -55,9 +55,19 @@ HitZombi is a zombie-shooting game based on FPGA and LED matrix display technolo
    - Player input is detected through buttons.
    - If the correct zombie is hit, the score updates, and the screen refreshes.
 4. After 30 seconds, the **finish state** triggers the game over sequence.
-- **The FPGA handles game logic computation and input processing**.
-- **The LED matrix displays the game visuals**, providing real-time feedback.
-- **Buttons serve as game control inputs**.
+
+**Game Architecture Diagram:**
+
+![Screenshot 3](upload:IMG_0728.png)
+
+**Waveform Diagram:**
+
+![Screenshot 1](upload:螢幕擷取畫面 2024-06-24 153232.png)
+
+![Screenshot 2](upload:螢幕擷取畫面 2024-06-24 153304.png)
+
+## Full Source Code
+The complete source code is available in the **PZ_v2** folder.
 
 ## Future Improvements
 - Add different types of zombies and difficulty settings.
