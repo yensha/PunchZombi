@@ -62,8 +62,8 @@ ShotZombie is a casual game developed by Capsule+ (面白革命capsule+). The be
 
 **Waveform Diagram:**
 
-<img src="https://raw.githubusercontent.com/your-username/your-repo/main/images/game_architecture.png" >
-<img src="https://raw.githubusercontent.com/your-username/your-repo/main/images/game_architecture.png" >
+<img src="https://github.com/yensha/PunchZombi/blob/main/Testing_File/%E8%9E%A2%E5%B9%95%E6%93%B7%E5%8F%96%E7%95%AB%E9%9D%A2%202024-06-24%20153232.png?raw=true" >
+<img src="https://github.com/yensha/PunchZombi/blob/main/Testing_File/%E8%9E%A2%E5%B9%95%E6%93%B7%E5%8F%96%E7%95%AB%E9%9D%A2%202024-06-24%20153304.png?raw=true" >
 
 ## Full Source Code
 The complete source code is available in the **PZ_v2** folder.
