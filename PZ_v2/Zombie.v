@@ -81,6 +81,6 @@ always @(posedge clk or posedge rst) begin
         end
     end
 end
-//寫�?�戲機致
+//寫�?�戲機致
 
 endmodule
