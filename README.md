@@ -3,7 +3,7 @@
 ## Introduction
 HitZombi is a zombie-shooting game based on FPGA and LED matrix display technology, using the **PYNQ-Z2** development board and a **32×64 LED matrix screen** to present the game visuals.
 
-![image](https://github.com/user-attachments/assets/b9fcb5a3-5a06-4287-b6a9-1a841a4ed1f1 =250x250)
+![image](https://github.com/user-attachments/assets/b9fcb5a3-5a06-4287-b6a9-1a841a4ed1f1 ){ width=250px height=250px }
 
 ShotZombie is a casual game developed by Capsule+ (面白革命capsule+). The best platform to play ShotZombie on a computer is through the Thunder Emulator, which provides powerful features for an immersive gaming experience.
 
